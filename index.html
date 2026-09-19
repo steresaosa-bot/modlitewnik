@@ -1412,12 +1412,12 @@ function loadSongFromCache(fileName, addHistory = true) {
     history.pushState({ view: 'song', file: fileName }, '', '#modlitwa=' + encodeURIComponent(fileName));
   }
 
-  const item = songItems.find(i => i.file === fileName);
+  const item = songItems.find(i => baseKey(i.file) === baseKey(fileName)) || songItems.find(i => i.file === fileName);
 
-  if (!item) return loadSong(fileName);
+  if (!item) return loadSong(fileName, addHistory);
 
-  document.getElementById("title").innerHTML =
-    formatMarkdown(item.title);
+  document.getElementById("title").innerHTML = formatMarkdown(item.title);
+  document.title = sanitizeTitle(item.title) + ' — Modlitewnik';
 
   const textEl = document.getElementById("text");
 
@@ -1464,6 +1464,31 @@ function loadSongFromCache(fileName, addHistory = true) {
     block: "start"
   });
 
+}
+
+async function loadSong(fileName, addHistory = true) {
+  try {
+    const { data, file: actualFile } = await fetchSongFile(fileName);
+    const parsed = parseSongData(data, actualFile);
+
+    // add to cache so subsequent opens use cached item
+    const existing = songItems.find(i => baseKey(i.file) === baseKey(actualFile));
+    if (!existing) songItems.push({ file: actualFile, actualFile, title: parsed.title, body: parsed.body });
+
+    document.getElementById('title').innerHTML = formatMarkdown(parsed.title);
+    document.getElementById('text').innerHTML = highlightText(parsed.body, lastQuery);
+    document.title = sanitizeTitle(parsed.title) + ' — Modlitewnik';
+
+    renderSongNav(actualFile);
+
+    document.getElementById('listView').style.display = 'none';
+    document.getElementById('songView').style.display = 'block';
+
+    if (addHistory) history.pushState({ view: 'song', file: actualFile }, '', '#modlitwa=' + encodeURIComponent(actualFile));
+
+  } catch (e) {
+    console.warn('Failed to load song', fileName, e);
+  }
 }
 function showPreviousSection() {
   if (!currentSection) {
