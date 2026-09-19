@@ -858,6 +858,15 @@ const prayerParts = [
   }
 ];
 
+function baseKey(name) {
+  return (name || '')
+    .replace(/\.md$/i, '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+}
+
 let songItems = [];
 let currentSection = null;
 let lastQuery = '';
@@ -1012,10 +1021,24 @@ async function loadAllSongs() {
 
 function buildSectionGroup(section, filter = '') {
   const q = (filter || '').toLowerCase().trim();
+  function baseKey(name) {
+    return (name || '')
+      .replace(/\.md$/i, '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '');
+  }
 
-  const sectionMatches = section.files ? songItems.filter(item => section.files.includes(item.file)) : [];
+  function matchesAny(itemFile, list) {
+    if (!list || !list.length) return false;
+    const k = baseKey(itemFile);
+    return list.some(f => baseKey(f) === k);
+  }
+
+  const sectionMatches = section.files ? songItems.filter(item => matchesAny(item.file, section.files)) : [];
   const childGroups = (section.children || []).map(child => {
-    const childItems = songItems.filter(item => child.files.includes(item.file));
+    const childItems = songItems.filter(item => matchesAny(item.file, child.files));
     const visibleItems = q
       ? childItems.filter(item => {
           return (item.title && item.title.toLowerCase().includes(q)) || (item.body && item.body.toLowerCase().includes(q));
@@ -1112,10 +1135,14 @@ function renderHome() {
 
     tile.addEventListener('click', () => {
       if (section.files && section.files.length === 1 && !section.children) {
-  homeView.style.display = 'none';
-  loadSongFromCache(section.files[0]);
-  return;
-}
+        homeView.style.display = 'none';
+        const match = songItems.find(i => {
+          return baseKey(i.file) === baseKey(section.files[0]);
+        });
+        const fileToLoad = match ? match.file : section.files[0];
+        loadSongFromCache(fileToLoad);
+        return;
+      }
 
       homeView.style.display = 'none';
       const listView = document.getElementById('listView');
@@ -1270,23 +1297,31 @@ function renderSongNav(fileName) {
   let currentIndex = -1;
 
   // Szukamy modlitwy w nowej strukturze prayerSections
-  for (const section of prayerSections) {
+  function baseKey(name) {
+    return (name || '')
+      .replace(/\.md$/i, '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '');
+  }
 
-    if (section.files && section.files.includes(fileName)) {
+  const target = baseKey(fileName);
+  for (const section of prayerSections) {
+    if (section.files && section.files.some(f => baseKey(f) === target)) {
       currentSection = section;
-      currentIndex = section.files.indexOf(fileName);
+      currentIndex = section.files.findIndex(f => baseKey(f) === target);
       break;
     }
 
     if (section.children) {
       for (let i = 0; i < section.children.length; i++) {
         const child = section.children[i];
-
-        if (child.files && child.files.includes(fileName)) {
+        if (child.files && child.files.some(f => baseKey(f) === target)) {
           currentSection = section;
           currentChild = child;
           currentChildIndex = i;
-          currentIndex = child.files.indexOf(fileName);
+          currentIndex = child.files.findIndex(f => baseKey(f) === target);
           break;
         }
       }
@@ -1505,6 +1540,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadAllSongs();
   renderAlphaIndex();
   renderHome();
+
+  // Handle initial URL fragment (so links with #kategoria or #spis work on first load)
+  const initialHash = (location.hash || '').toLowerCase();
+  if (initialHash === '#kategoria') {
+    showList();
+    renderList();
+  } else if (initialHash === '#spis') {
+    openAlphabeticModal();
+  }
 
   const modal = document.getElementById('alphabeticModal');
   document.querySelector('.alphabeticModalClose').addEventListener('click', closeAlphabeticModal);
