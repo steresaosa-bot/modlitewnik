@@ -1,11 +1,53 @@
 --- 
-title: Idźmy, tulmy się jak dziatki
+title: Różaniec
 ---
+Wierzę w Boga…,
+Ojcze nasz…, 
+Zdrowaś Maryjo…(3x),
+Chwała Ojcu…
 
-1. Idźmy, tulmy się jak dziatki, * do Serca Maryi Matki; * czy nas nęka życia trud, * czy to winy czerni brud! * Idźmy, idźmy ufnym krokiem, * z rzewnym sercem, z łzawym okiem: * Serce to zna dzieci głos, * odwróci bolesny cios.
+Przy każdej tajemnicy:
+Ojcze nasz…, 
+Zdrowaś Maryjo… (10x),
+Chwała Ojcu…
 
-2. Ach, to Serce dobroć sama, * najczulszej z córek Adama, * jest otwarte w każdy czas, * samo szuka, wzywa nas: * „Pójdźcie do mnie, dziatki moje! * Wyczerpnijcie łaski zdroje! * Kto mnie znajdzie, życie ma, * temu Syn zbawienie da!”.
+**Część I – tajemnice radosne**
+[czerwony]*W poniedziałki i soboty.*[/czerwony]
 
-3. To Maryi Serca chwałą, * że zgubionym Zbawcę dało. * Jemuś winien, świecie, cud, * że Bóg zstąpił zbawić lud. * Pod nim Jezusa nosiła, * do niego czule tuliła, * wychowała, by BógSyn * zgładził długi naszych win.
+1. Zwiastowanie Najświętszej Maryi Pannie.
+2. Nawiedzenie św. Elżbiety.
+3. Narodzenie Pana Jezusa.
+4. Ofiarowanie Pana Jezusa w świątyni.
+5. Znalezienie Pana Jezusa w świątyni.
 
-4. Więc do Ciebie, jak do Matki, * idziem, tulim się, Twe dziatki: * Matko, ulżyj życia trud, * zmyj z serc naszych winy brud! * Ty nas kochasz, a my Ciebie, * niech się z Tobą złączym w niebie. * Matko, kto nie kocha Cię, * dzieckiem Twym nie zowie się!
+**Część II – tajemnice światła**
+[czerwony]*W czwartki.*[/czerwony]
+1. Chrzest Pana Jezusa w Jordanie.
+2. Cud na weselu w Kanie Galilejskiej.
+3. Głoszenie Królestwa Bożego i wzywanie do nawrócenia.
+4. Przemienienie na górze Tabor.
+5. Ustanowienie Eucharystii.
+
+**Część III – tajemnice bolesne**
+[czerwony]*We wtorki i piątki.*[/czerwony]
+1. Modlitwa Pana Jezusa w Ogrójcu.
+2. Biczowanie Pana Jezusa.
+3. Cierniem ukoronowanie Pana Jezusa.
+4. Droga krzyżowa Pana Jezusa.
+5. Ukrzyżowanie i śmierć Pana Jezusa.
+
+**Część IV – tajemnice chwalebne**
+[czerwony]*W środy i niedziele.*[/czerwony]
+1. Zmartwychwstanie Pana Jezusa.
+2. Wniebowstąpienie Pana Jezusa.
+3. Zesłanie Ducha Świętego.
+4. Wniebowzięcie Najświętszej Maryi Panny.
+5. Ukoronowanie Najświętszej Maryi Panny na królową nieba i ziemi.
+
+*Po każdej dziesiątce dodajemy akt strzelisty z Fatimy:*
+
+O mój Jezu, przebacz nam nasze grzechy, zachowaj nas od ognia piekielnego, zaprowadź wszystkie dusze do nieba i dopomóż szczególnie tym, którzy najbardziej potrzebują Twojego miłosierdzia. 
+
+[czerwony]*Na zakończenie części Różańca:*[/czerwony]
+
+Witaj, Królowo, Matko miłosierdzia, życie, słodyczy i nadziejo nasza, witaj. Do Ciebie wołamy wygnańcy, synowie Ewy. Do Ciebie wzdychamy, jęcząc i płacząc na tym łez padole. Przeto, Orędowniczko nasza, one miłosierne oczy Twoje na nas zwróć. A Jezusa, błogosławiony owoc żywota Twojego, po tym wygnaniu nam okaż. O łaskawa, o litościwa, o słodka Panno Maryjo.

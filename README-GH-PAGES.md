@@ -1,6 +1,6 @@
-# Śpiewnik — Deploy to GitHub Pages
+# Modlitewnik — Deploy to GitHub Pages
 
-This folder contains a small static songbook. The repository can be published to GitHub Pages so you can open it on your smartphone via HTTPS.
+This folder contains a small static prayer and songbook site. The repository can be published to GitHub Pages so you can open it on your smartphone via HTTPS.
 
 Quick steps to publish (replace USERNAME and REPO):
 

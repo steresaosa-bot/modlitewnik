@@ -3,27 +3,293 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Śpiewnik</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#2c3e50">
+  <meta name="description" content="Modlitewnik — zbiór modlitw, litanie i treści do wspólnej modlitwy.">
+  <title>Modlitewnik</title>
+
+  <script src="./Hyphenopoly_Loader.js"></script>
+  <script>
+    Hyphenopoly.config({
+      require: {
+        "pl": "najdłuższe"
+      },
+      setup: {
+        selectors: {
+          ".lyrics": {}
+        }
+      }
+  });
+</script>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f4d47">
 
   <style>
-    body { font-family: Arial; margin: 0; background: #f4f4f4; }
-    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+    :root {
+      --bg: #f5f1e8;
+      --panel: #fffdf9;
+      --primary: #1f4d47;
+      --primary-dark: #163d39;
+      --gold: #c28b2b;
+      --gold-dark: #a96f12;
+      --text: #1e1e1e;
+      --muted: #5c5c5c;
+      --shadow: rgba(17, 24, 39, 0.08);
+    }
 
-    .container { max-width:700px; margin:auto; padding:15px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #f7f2e9 0%, #f1eadf 100%);
+      color: var(--text);
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #2b665d 100%);
+      color: white;
+      padding: 28px 16px 18px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(31, 77, 71, 0.15);
+    }
 
-    .song {
-      background: #fff;
-      padding:12px 14px;
+    .brandWrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brandMark {
+      width: 82px;
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.04);
+      border: none;
+      border-radius: 26px;
+      box-shadow: none;
+      overflow: hidden;
+    }
+
+    .brandMark img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      border-radius: 26px;
+    }
+
+    .brand {
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .brandSub {
+      display: none;
+    }
+
+    .container { max-width:760px; margin:auto; padding:15px; }
+    
+
+    .introCard {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(31,77,71,0.08);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px var(--shadow);
+      padding: 14px 16px;
+      margin: 16px 0 12px;
+      color: var(--muted);
+    }
+
+    .introCard strong {
+      color: var(--primary);
+    }
+
+    .sectionBlock {
+      margin: 18px 0;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(31,77,71,0.09);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(17,24,39,0.05);
+      overflow: hidden;
+    }
+
+    .sectionTitle {
+      padding: 12px 16px;
+      background: linear-gradient(135deg, rgba(31,77,71,0.12), rgba(194,139,43,0.08));
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(31,77,71,0.08);
+    }
+    .songTitle {
+      text-align: left;
+      white-space: pre-line;
+      line-height: 1.0;
+      margin-bottom: -0.1em;
+    }
+    .songTitle em {
+      font-size: 0.55em;
+    }
+    .subSection {
+      padding: 8px 0 0;
+    }
+    .song .verseLine {
+      display: block;
+    }
+    .subSectionTitle {
+      padding: 10px 16px 6px;
+      font-weight: 700;
+      color: #3b3b3b;
+      font-size: 1rem;
+    }
+
+    .partBlock {
+      margin: 18px 0;
+    }
+
+    .partHeader {
+      margin: 0 0 10px;
+      padding: 8px 12px;
+      background: rgba(31,77,71,0.08);
+      border-left: 4px solid var(--gold);
       border-radius: 10px;
+      color: var(--primary);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .alphabeticModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(21, 27, 26, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+    .prayerModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .prayerModal.open {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .prayerModalContent {
+  position: relative;
+  width: min(700px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.prayerModalContent #prayerModalText {
+  text-align: justify;
+  hyphens: auto;
+  margin-top: 12px;
+  white-space: pre-line;
+}
+
+    .prayerModalClose {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .prayerModalContent .songTitle {
+      padding-right: 40px;
+    }
+
+    body.night .prayerModalContent {
+      background: #111;
+      color: #eee;
+    }
+
+    .alphabeticModal.open {
+      display: flex;
+    }
+
+    .alphabeticModalContent {
+      width: min(900px, 100%);
+      max-height: 82vh;
+      overflow: auto;
+      background: #fffdf9;
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(17,24,39,0.25);
+      border: 1px solid rgba(31,77,71,0.12);
+    }
+
+    .alphabeticModalHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(31,77,71,0.12);
+      background: linear-gradient(135deg, rgba(31,77,71,0.12), rgba(194,139,43,0.08));
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .alphabeticModalClose {
+      border: none;
+      background: transparent;
+      color: var(--primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .alphabeticModalBody {
+      padding: 10px 12px 14px;
+    }
+
+    .sectionItems {
+      padding: 0 12px 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .quote {
+     font-family: Georgia, serif;
+     text-align: center;
+    }
+    .song {
+      background: rgba(255,255,255,0.95);
+      padding:12px 14px;
+      border-radius: 12px;
       cursor:pointer;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 3px 10px rgba(17,24,39,0.06);
+      border: 1px solid rgba(31,77,71,0.08);
       width: 100%;
       text-align: left;
       font-size: 1rem;
-      margin-bottom: 10px;
+      margin-bottom: 0;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -48,8 +314,9 @@
     }
 
     #searchInput {
-      flex: 1 1 100%;
-      min-width: 200px;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
     }
 
     .searchActions {
@@ -69,6 +336,7 @@
       cursor:pointer;
       transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
       min-width: 110px;
+      font-size: 1rem;
     }
 
     .controlBtn:hover {
@@ -76,23 +344,23 @@
     }
 
     .actionBtn {
-      background:#2c3e50;
+      background: linear-gradient(135deg, var(--primary) 0%, #2d665f 100%);
       color:#fff;
-      border-color:#2c3e50;
+      border-color:var(--primary);
     }
 
     .actionBtn:hover {
-      background:#24313f;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #234f48 100%);
     }
 
     .secondaryBtn {
-      background:#28a745;
+      background: linear-gradient(135deg, var(--gold) 0%, #d19d3a 100%);
       color:#fff;
-      border-color:#28a745;
+      border-color:var(--gold);
     }
 
     .secondaryBtn:hover {
-      background:#1f7c38;
+      background: linear-gradient(135deg, var(--gold-dark) 0%, #b67815 100%);
     }
 
     .topBar input[type="range"] {
@@ -103,26 +371,103 @@
     body.night { background: #111; color: #eee; }
     body.night header { background: #000; }
     body.night .song { background: transparent; color: #eee; border-bottom: 1px solid rgba(255,255,255,0.06); }
-
+    body.night #listView {
+      background: #111;
+      color: #eee;
+    }
     body.night .letterHeader { color: #ccc; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
     body.large-font { font-size: 1.25rem; }
 
     mark.highlight { background: #ffea70; color: #000; padding: 0 2px; border-radius: 2px; }
-
-    .lyrics { 
-      display:none;
-      background: transparent;
-      color: inherit;
-      padding:8px 0;
-      border-radius:0;
-      white-space:pre-line;
-      line-height: 1.05;
-      margin: 0;
+    body.night .alphabeticBtn {
+      background: #1e1e1e !important;
+      color: #eee !important;
+      border-color: #555 !important;
+    }
+    body.night .alphabeticModalContent {
+      background: #111;
+      color: #eee;
     }
 
-    .lyrics p {
-      margin: 0 0 0.2em 0;
+    body.night .alphabeticModalHeader {
+      background: #222;
+      color: #eee;
+    }
+
+    body.night .alphabeticModalBody {
+      background: #111;
+    }
+
+    body.night .alphabeticModal .sectionBlock {
+      background: #111;
+      border-color: rgba(255,255,255,0.08);
+    }
+    body.night .tile {
+      background: #222;
+      color: #eee;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+    body.night .sectionBlock {
+      background: #111;
+      color: #eee;
+      border-color: rgba(255,255,255,0.08);
+    } 
+    body.night .sectionTitle {
+      color: #b8d8d3;
+    }
+    .lyrics {
+  display: none;
+  background: transparent;
+  color: inherit;
+  padding: 8px 0;
+  border-radius: 0;
+  white-space: pre-line;
+  line-height: 1.45;
+  margin: 0;
+  text-align: justify;
+  hyphens: auto;
+}
+.lyrics .verseLine {
+  display: block;
+  line-height: 1.35;
+  margin-bottom: 0.1em;
+}
+.lyrics p {
+  margin: 0 0 0.2em 0;
+}
+
+    .songNav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(31,77,71,0.12);
+    }
+
+    .songNavMeta {
+      flex: 1;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .navBtn {
+      min-width: 120px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(31,77,71,0.25);
+      background: #fff;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .navBtn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     .back {
@@ -135,55 +480,142 @@
     body.night .lyrics { background: transparent; color: inherit; border: none; }
     body.night .back { color: #9ecbff; }
     body.night mark.highlight { background: #ffea70; color: #000; }
+    .tileGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+body.night .prayerLink {
+  color: #a0ddea;
+}
+body.large-font .tileGrid {
+  grid-template-columns: 1fr;
+}
+.tile {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 110px;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--primary);
+  box-shadow: 0 6px 18px var(--shadow);
+  font-size: 1.05rem;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.tile:hover {
+  transform: translateY(-1px);
+}
+
+.tileIcon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
   </style>
 </head>
 
 <body>
 
-<header>🎵 Śpiewnik Pielgrzymkowy</header>
+<header>
+  <div class="brandWrap">
+    <div class="brandMark" aria-label="Herb augustiański">
+      <img src="herb.svg" alt="Herb augustiański" style="width:100%; height:100%; object-fit:contain; display:block;" />
+    </div>
+    <div class="brand">Modlitwy Zgromadzenia Sióstr Św. Augustyna w Polsce</div>
+  </div>
+</header>
 
 <div class="container">
+  <div class="introCard quote">
+    Przyjdź, Panie i porusz nasze serca. Przywołaj nas do siebie. Zapal nas i porwij. Niech nas owieje Twoja woń i słodycz Twoja — abyśmy już Cię pokochali, już pobiegli ku Tobie.<br>
+   <div style="text-align: right; font-style: italic;">św. Augustyn, Wyznania 8,4 </div>
+  </div>
 
   <div id="searchBar" class="topBar" style="margin-bottom:8px; display:flex; flex-direction:column;">
-    <input id="searchInput" placeholder="Szukaj tekstu w utworach..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #ccc;" />
+    <input id="searchInput" enterkeyhint="search" placeholder="Szukaj modlitwy, litanie albo słowa..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #ccc;font-size:1rem;" />
     <div class="searchActions">
       <button id="searchBtn" class="controlBtn actionBtn">Szukaj</button>
       <button id="clearBtn" class="controlBtn">Wyczyść</button>
-      <button id="themeBtn" title="Tryb nocny/dzienny" class="controlBtn">Noc/Dzień</button>
+      <button id="themeBtn" title="Tryb nocny/dzienny" class="controlBtn">Noc / Dzień</button>
       <div id="fontControl" style="display:flex;align-items:center;gap:6px;">
         <input id="fontSlider" type="range" min="14" max="36" value="16" />
         <span id="fontSizeLabel" style="min-width:36px;text-align:center;">16px</span>
       </div>
-      <button id="installBtn" class="controlBtn secondaryBtn" style="display:none;">Zainstaluj</button>
+      <button id="installBtn" class="controlBtn secondaryBtn" style="display:none;">Pobierz app</button>
     </div>
   </div>
 
   <div id="alphaIndex" style="margin-bottom:12px; font-size:1.3rem; font-weight:600; color:#333; display:flex; gap:8px; flex-wrap:wrap;"></div>
 
+  <div id="homeView"></div>
   <div id="listView"></div>
 
-  <div id="songView" class="lyrics">
-    <div class="back" onclick="showList()">← Powrót</div>
-    <h2 id="title"></h2>
-    <div id="text"></div>
+  <div id="alphabeticModal" class="alphabeticModal" aria-hidden="true">
+    <div class="alphabeticModalContent" role="dialog" aria-modal="true" aria-labelledby="alphabeticTitle">
+      <div class="alphabeticModalHeader">
+        <span id="alphabeticTitle">Spis alfabetyczny</span>
+        <button type="button" class="alphabeticModalClose" aria-label="Zamknij">×</button>
+      </div>
+      <div id="alphabeticList" class="alphabeticModalBody"></div>
+    </div>
   </div>
+
+  <div id="songView" class="lyrics">
+    <div class="back" onclick="showPreviousSection()">← Powrót</div>
+    <h2 id="title" class="songTitle"></h2>
+    <div id="text"></div>
+    <div id="songNav" class="songNav"></div>
+  </div>
+  <div id="prayerModal" class="prayerModal" aria-hidden="true">
+  <div class="prayerModalContent" role="dialog" aria-modal="true">
+    <button type="button" class="prayerModalClose" aria-label="Zamknij">×</button>
+    <h2 id="prayerModalTitle" class="songTitle"></h2>
+    <div id="prayerModalText"></div>
+  </div>
+</div>
 
 </div>
 
 <script>
 const songs = [
-  "badzze.md",
-  "barka.md",
-  "boze.md",
-  "coz.md",
+  "przedroz.md",
+  "poroz.md",
+  "aniolangelus.md",
+  "aniolpa.md",
+  "krolowo.md",
+  "angelus.md",
+  "regina.md",
+  "aniol.md",
+  "konaj.md",
+  "oddania.md",
+  "michal.md",
+  "uwielbiam.md",
+  "litaug.md",
+  "rodzina.md",
+  "magnepater.md",
+  "hymnaug.md",
+  "owielki.md",
+  "krakow.md",
+  "lubien.md",
+  "niepolomice.md",
+  "bielawad.md",
+  "bielawag.md",
+  "jutrznia.md",
+  "nieszpory.md",
   "cześć.md",
   "gwiazdo.md",
   "hostii.md",
   "idźmy.md",
-  "jasnogórska.md",
-  "jezu.md",
   "jezujezu.md",
-  "klaniam.md",
   "koch.md",
   "Krolowej.md",
   "kto.md",
@@ -207,10 +639,227 @@ const songs = [
   "Z dawna Polski Tyś Królową.md",
   "zblizam.md",
   "zdrowaś.md",
-  "zrobcie.md"
+  "zrobcie.md",
+  "chlebie.md",
+  "dzieki.md",
+  "nad.md",
+  "niech.md",
+  "oto.md",
+  "paniemoj.md",
+  "pie.md",
+  "poz.md",
+  "przy.md",
+  "wej.md",
+  "witaj.md",
+  "wode.md",
+  "wspan.md",
+];
+
+const prayerSections = [
+
+  {
+    id: 'poranne',
+    title: 'Modlitwy poranne',
+    icon: '🌅',
+    files: ['przedroz.md', 'poroz.md', 'aniolangelus.md', 'aniol.md', 'konaj.md', 'oddania.md', 'michal.md']
+  },
+
+  {
+    id: 'poludniowe',
+    title: 'Modlitwy południowe',
+    icon: '☀️',
+    children: [
+      { id: 'nawiedzenie', title: 'Nawiedzenie Najświętszego Sakramentu', files: ['uwielbiam.md'] },
+      { id: 'augustyn', title: 'Modlitwy ku czci świętego Augustyna', files: ['rodzina.md', 'litaug.md', 'magnepater.md', 'hymnaug.md', 'owielki.md'] },
+      { id: 'patron', title: 'Modlitwa ku czci patrona domu zakonnego', files: ['krakow.md', 'lubien.md', 'niepolomice.md', 'bielawad.md', 'bielawag.md'] }
+    ]
+  },
+
+  {
+    id: 'wieczorne',
+    title: 'Modlitwy wieczorne',
+    icon: '🌙',
+    files: ['boze.md', 'coz.md', 'matko.md', 'zrobcie.md']
+  },
+
+  {
+    id: 'matka',
+    title: 'Modlitwy ku czci Matki Bożej Pocieszenia',
+    icon: '🙏',
+    files: ['Krolowej.md', 'serdeczna matko.md', 'gwiazdo.md']
+  },
+
+  {
+    id: 'spoczynek',
+    title: 'Modlitwy przed spoczynkiem',
+    icon: '😴',
+    files: ['zdrowaś.md', 'witaj.md', 'niech.md', 'zblizam.md']
+  },
+
+  {
+    id: 'wyznaczone-dni',
+    title: 'Modlitwy w wyznaczonych dniach',
+    icon: '📅',
+    children: [
+      {
+        id: 'nspj',
+        title: 'Ku czci Najświętszego Serca Pana Jezusa',
+        files: ['jezu.md', 'hostii.md', 'pie.md', 'pod.md']
+      },
+      {
+        id: 'meka',
+        title: 'Na uczczenie Męki Pańskiej',
+        files: ['prez.md', 'skryty.md', 'wej.md', 'pod.md']
+      },
+      {
+        id: 'nmp',
+        title: 'Ku czci Najświętszej Maryi Panny',
+        files: ['Krolowej.md', 'serdeczna matko.md', 'gwiazdo.md', 'matko.md']
+      },
+      {
+        id: 'jozef',
+        title: 'Ku czci św. Józefa',
+        files: ['opanie.md', 'klaniam.md', 'zrobcie.md', 'boze.md']
+      },
+      {
+        id: 'nowenny',
+        title: 'Nowenny',
+        files: ['niech.md', 'witaj.md', 'zblizam.md', 'przybadz.md']
+      },
+      {
+        id: 'chorych',
+        title: 'Modlitwy za chorych i konających',
+        files: ['cześć.md', 'chlebie.md', 'dzieki.md', 'nad.md']
+      },
+      {
+        id: 'zmarlych',
+        title: 'Za zmarłych',
+        files: ['barka.md', 'oto.md', 'paniemoj.md', 'wspan.md']
+      }
+    ]
+  },
+
+  {
+    id: 'wspolne',
+    title: 'Modlitwy wspólne w różnych okolicznościach',
+    icon: '🤲',
+    files: [
+      'idźmy.md',
+      'jezujezu.md',
+      'koch.md',
+      'ostworzycielu.md',
+      'pan.md',
+      'panie.md',
+      'pojdz.md',
+      'przy.md',
+      'uczyńcie.md',
+      'udrzwi.md',
+      'ukrytego.md',
+      'weź.md',
+      'witam.md',
+      'wszystko.md',
+      'wode.md'
+    ]
+  },
+
+  {
+    id: 'augustianie',
+    title: 'Modlitwy za przyczyną świętych zakonu augustiańskiego',
+    icon: '✝️',
+    files: [
+      'poz.md',
+      'prez.md',
+      'skryty.md',
+      'kto.md',
+      'pan.md',
+      'witaj.md'
+    ]
+  },
+
+  {
+    id: 'odnowienie',
+    title: 'Odnowienie ślubów',
+    icon: '🕊️',
+    files: ['zblizam.md']
+  },
+
+  {
+  id: 'prosby',
+  title: 'Prośby – Jutrznia i Nieszpory',
+  icon: '🙏',
+  files: ['jutrznia.md', 'nieszpory.md']
+},
+];
+
+const prayerParts = [
+  { id: 'part1', title: 'Część 1', sections: prayerSections },
+  {
+    id: 'part2',
+    title: 'Część 2',
+    sections: [
+      {
+        id: 'wyznaczone-dni',
+        title: 'Modlitwy w wyznaczonych dniach',
+        children: [
+          { id: 'nspj', title: 'Ku czci Najświętszego Serca Pana Jezusa', files: ['jezu.md', 'hostii.md', 'pie.md', 'pod.md'] },
+          { id: 'meka', title: 'Na uczczenie Męki Pańskiej', files: ['prez.md', 'skryty.md', 'wej.md', 'pod.md'] },
+          { id: 'nmp', title: 'Ku czci Najświętszej Maryi Panny', files: ['Krolowej.md', 'serdeczna matko.md', 'gwiazdo.md', 'matko.md'] },
+          { id: 'jozef', title: 'Ku czci św. Józefa', files: ['opanie.md', 'klaniam.md', 'zrobcie.md', 'boze.md'] },
+          { id: 'nowenny', title: 'Nowenny', files: ['niech.md', 'witaj.md', 'zblizam.md', 'przybadz.md'] },
+          { id: 'chorych', title: 'Modlitwy za chorych i konających', files: ['boze.md', 'coz.md', 'niech.md', 'witaj.md'] },
+          { id: 'zmarlych', title: 'Za zmarłych', files: ['barka.md', 'matko.md', 'boze.md', 'wspan.md'] }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'part3',
+    title: 'Część 3',
+    sections: [
+      {
+        id: 'wspolne',
+        title: 'Modlitwy wspólne w różnych okolicznościach',
+        children: [
+          { id: 'rozpoczecie', title: 'Rozpoczęcie i zakończenie aktów wspólnych', files: ['pod.md', 'zdrowaś.md', 'witam.md', 'przy.md'] },
+          { id: 'zgromadzenie', title: 'Modlitwy za nasze zgromadzenie', files: ['wspan.md', 'koch.md', 'wszystko.md', 'barka.md'] },
+          { id: 'matka-dobra-rada', title: 'Za przyczyną Matki Bożej Dobrej Rady', files: ['Krolowej.md', 'serdeczna matko.md', 'gwiazdo.md', 'matko.md'] }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'part4',
+    title: 'Część 4',
+    sections: [
+      {
+        id: 'augustianie',
+        title: 'Modlitwy za przyczyną świętych zakonu augustiańskiego',
+        children: [
+          { id: 'augustyn-sw', title: 'Św. Ojciec Augustyn', files: ['prez.md', 'skryty.md', 'wej.md', 'hostii.md'] },
+          { id: 'tomasz', title: 'Św. Tomasz z Villanova', files: ['pan.md', 'weź.md', 'wspan.md', 'boze.md'] },
+          { id: 'mikolaj', title: 'Św. Mikołaj z Tolentino', files: ['witam.md', 'przy.md', 'nad.md', 'wej.md'] },
+          { id: 'bellesini', title: 'Bł. Stefan Bellesini', files: ['boze.md', 'coz.md', 'matko.md', 'witaj.md'] },
+          { id: 'klara', title: 'Św. Klara od Krzyża', files: ['hostii.md', 'pod.md', 'weź.md', 'kto.md'] },
+          { id: 'rita', title: 'Św. Rita z Cascia', files: ['matko.md', 'gwiazdo.md', 'serdeczna matko.md', 'wspan.md'] }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'odnowienie',
+    title: 'Odnowienie ślubów',
+    sections: [
+      {
+        id: 'odnowienie-slubow',
+        title: 'Odnowienie ślubów',
+        files: ['zblizam.md', 'witaj.md', 'boze.md', 'coz.md']
+      }
+    ]
+  }
 ];
 
 let songItems = [];
+let currentSection = null;
 let lastQuery = '';
 
 function stripHtml(html) {
@@ -219,10 +868,16 @@ function stripHtml(html) {
   return tmp.textContent || tmp.innerText || '';
 }
 
+function sanitizeTitle(rawTitle) {
+  if (!rawTitle) return '';
+  const cleaned = rawTitle.replace(/^#+\s*/, '').trim();
+  return stripHtml(cleaned).trim();
+}
+
 async function fetchSongFile(file) {
   try {
-    const res = await fetch(encodeURI(file));
-    if (res.ok) return { data: await res.text(), file };
+    const res = await fetch(encodeURI(file), { cache: 'no-store' });
+    if (res.ok) return { data: await res.text(), file, requestedFile: file };
   } catch (e) {
     // ignore and try fallback
   }
@@ -231,7 +886,7 @@ async function fetchSongFile(file) {
     const htmlFile = file.replace(/\.md$/i, '.html');
     try {
       const res2 = await fetch(encodeURI(htmlFile));
-      if (res2.ok) return { data: await res2.text(), file: htmlFile };
+      if (res2.ok) return { data: await res2.text(), file: htmlFile, requestedFile: file };
     } catch (e) {
       // ignore fallback failure
     }
@@ -241,14 +896,41 @@ async function fetchSongFile(file) {
 }
 
 function parseSongData(data, file) {
-  const isHtml = file.toLowerCase().endsWith('.html');
+  function isGenericTitle(value) {
+    if (!value) return true;
+    const cleaned = value.trim().toLowerCase();
+    if (cleaned.includes('pielgrzymka') || cleaned.includes('śpiewnik')) return true;
+    const genericPattern = /^\s*(?:(?:śpiewnik|pielgrzymkowy|pielgrzymka|home|index)(?:[\s\u2013\u2014\-\|:\/\\]+(?:śpiewnik|pielgrzymkowy|pielgrzymka|home|index))*)\s*$/i;
+    return genericPattern.test(cleaned);
+  }
+
+  const looksLikeHtml = /<(?:html|!doctype|body|title|h1)[\s>]/i.test(data);
+  const isHtml = file.toLowerCase().endsWith('.html') || looksLikeHtml;
 
   if (isHtml) {
     const cleaned = data
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '');
-    const titleMatch = cleaned.match(/<h1[^>]*>(.*?)<\/h1>/i) || cleaned.match(/<title[^>]*>(.*?)<\/title>/i);
-    const title = titleMatch ? titleMatch[1].trim() : file.replace(/\.html$/i, '');
+
+    let title = null;
+    const h1Matches = cleaned.match(/<h1[^>]*>([\s\S]*?)<\/h1>/gi) || [];
+    for (const match of h1Matches) {
+      const candidate = sanitizeTitle(match.replace(/<\/??h1[^>]*>/gi, '')).trim();
+      if (!candidate) continue;
+      if (isGenericTitle(candidate)) continue;
+      title = candidate;
+      break;
+    }
+
+    if (!title) {
+      const titleMatch = cleaned.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+      if (titleMatch) title = sanitizeTitle(titleMatch[1].trim());
+    }
+
+    if (!title || isGenericTitle(title)) {
+      title = file.replace(/\.html$/i, '').replace(/\.md$/i, '');
+    }
+
     const body = stripHtml(cleaned).replace(/\r?\n\s*\r?\n/g, '\n\n').trim();
     return { title, body };
   }
@@ -258,28 +940,60 @@ function parseSongData(data, file) {
   // Try to read YAML frontmatter (between the first pair of ---)
   let title = null;
   if (parts.length > 2) {
-    const frontmatter = parts[1];
+
+  const frontmatter = parts[1];
+
+  const titleBlockMatch = frontmatter.match(
+    /^\s*title\s*:\s*\|\s*\r?\n((?:[ \t]+.*(?:\r?\n|$))*)/im
+  );
+
+  if (titleBlockMatch) {
+
+    title = titleBlockMatch[1]
+      .split(/\r?\n/)
+      .map(line => line.replace(/^[ \t]+/, '').trimEnd())
+      .filter((line, index, lines) => !(index === lines.length - 1 && line === ''))
+      .join('\n')
+      .trim();
+
+  } else {
+
     const titleMatch = frontmatter.match(/^\s*title\s*:\s*(.+)\s*$/im);
+
     if (titleMatch) {
+
       title = titleMatch[1].trim();
-      // strip surrounding quotes if present
-      if ((title.startsWith('"') && title.endsWith('"')) || (title.startsWith("'") && title.endsWith("'"))) {
+
+      if (
+        (title.startsWith('"') && title.endsWith('"')) ||
+        (title.startsWith("'") && title.endsWith("'"))
+      ) {
+
         title = title.slice(1, -1).trim();
+
       }
+
     }
+
   }
+
+}
   if (!title) {
     const lines = data.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
     for (const line of lines) {
-      const candidate = line.replace(/^#+\s*/, '').replace(/<[^>]+>/g, '').trim();
+      const candidate = sanitizeTitle(line);
       if (!candidate) continue;
-      // Ignore generic fallback page headers that just point back to the site.
       if (candidate.toLowerCase().includes('pielgrzymka') && candidate.toLowerCase().includes('https://')) continue;
       title = candidate;
       break;
     }
   }
-  return { title: title || file.replace(/\.md$/i, ''), body: body.trim() };
+
+  if (!title || isGenericTitle(title)) {
+    title = file.replace(/\.md$/i, '');
+  }
+
+  return { title, body: body.trim() };
 }
 
 async function loadAllSongs() {
@@ -287,118 +1001,460 @@ async function loadAllSongs() {
     try {
       const { data, file: actualFile } = await fetchSongFile(file);
       const parsed = parseSongData(data, actualFile);
-      return { file: actualFile, title: parsed.title, body: parsed.body };
+      return { file, actualFile, title: parsed.title, body: parsed.body };
     } catch (e) {
-      return { file, title: file.replace(/\.md$/i, ''), body: '' };
+      return { file, actualFile: file, title: file.replace(/\.md$/i, ''), body: '' };
     }
   }));
 
   songItems = list;
 }
 
+function buildSectionGroup(section, filter = '') {
+  const q = (filter || '').toLowerCase().trim();
+
+  const sectionMatches = section.files ? songItems.filter(item => section.files.includes(item.file)) : [];
+  const childGroups = (section.children || []).map(child => {
+    const childItems = songItems.filter(item => child.files.includes(item.file));
+    const visibleItems = q
+      ? childItems.filter(item => {
+          return (item.title && item.title.toLowerCase().includes(q)) || (item.body && item.body.toLowerCase().includes(q));
+        })
+      : childItems;
+
+    return { child, visibleItems };
+  });
+
+  const directVisible = q
+    ? sectionMatches.filter(item => {
+        return (item.title && item.title.toLowerCase().includes(q)) || (item.body && item.body.toLowerCase().includes(q));
+      })
+    : sectionMatches;
+
+  const hasAnyItems = directVisible.length > 0 || childGroups.some(group => group.visibleItems.length > 0);
+  if (!hasAnyItems) return null;
+
+  const block = document.createElement('div');
+  block.className = 'sectionBlock';
+
+  const title = document.createElement('div');
+  title.className = 'sectionTitle';
+  title.textContent = section.title;
+  block.appendChild(title);
+
+  if (section.children && section.children.length) {
+    section.children.forEach(child => {
+      const group = childGroups.find(g => g.child.id === child.id);
+      if (!group || group.visibleItems.length === 0) return;
+
+      const sub = document.createElement('div');
+      sub.className = 'subSection';
+
+      const subTitle = document.createElement('div');
+      subTitle.className = 'subSectionTitle';
+      subTitle.textContent = child.title;
+      sub.appendChild(subTitle);
+
+      const itemsWrap = document.createElement('div');
+      itemsWrap.className = 'sectionItems';
+
+      group.visibleItems.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'song';
+        btn.innerHTML = highlightText(formatMarkdown(item.title), q || '');
+        btn.addEventListener('click', () => loadSongFromCache(item.file));
+        itemsWrap.appendChild(btn);
+      });
+
+      sub.appendChild(itemsWrap);
+      block.appendChild(sub);
+    });
+  }
+
+  if (directVisible.length > 0) {
+    const itemsWrap = document.createElement('div');
+    itemsWrap.className = 'sectionItems';
+    directVisible.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'song';
+      btn.innerHTML = highlightText(formatMarkdown(item.title), q || '');
+      btn.addEventListener('click', () => loadSongFromCache(item.file));
+      itemsWrap.appendChild(btn);
+    });
+    block.appendChild(itemsWrap);
+  }
+
+  return block;
+}
+function renderHome() {
+  const homeView = document.getElementById('homeView');
+  homeView.innerHTML = '';
+
+  const grid = document.createElement('div');
+  grid.className = 'tileGrid';
+
+  prayerSections.forEach(section => {
+    const tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = 'tile';
+
+    const icon = document.createElement('div');
+    icon.className = 'tileIcon';
+    icon.textContent = section.icon;
+
+    const title = document.createElement('div');
+    title.textContent = section.title;
+
+    tile.appendChild(icon);
+    tile.appendChild(title);
+
+    tile.addEventListener('click', () => {
+      if (section.files && section.files.length === 1 && !section.children) {
+  homeView.style.display = 'none';
+  loadSongFromCache(section.files[0]);
+  return;
+}
+
+      homeView.style.display = 'none';
+      const listView = document.getElementById('listView');
+      listView.style.display = '';
+      renderListForSection(section);
+    });
+    grid.appendChild(tile);
+  });
+
+  homeView.appendChild(grid);
+}
+function renderListForSection(section, addHistory = true) {
+
+ if (addHistory) {
+  history.pushState(
+    { view: 'section', sectionId: section.id },
+    '',
+    '#kategoria'
+  );
+}
+
+  const listView = document.getElementById('listView');
+  listView.innerHTML = '';
+
+  const back = document.createElement('div');
+  back.className = 'back';
+  back.textContent = '← Powrót do kategorii';
+  back.addEventListener('click', () => {
+  listView.style.display = 'none';
+  document.getElementById('homeView').style.display = '';
+});
+  listView.appendChild(back);
+
+  const sectionEl = buildSectionGroup(section, '');
+  currentSection = section;
+  if (sectionEl) {
+    listView.appendChild(sectionEl);
+  }
+}
 function renderList(filter = '', startsWith = false, doHighlight = true) {
-  // only set lastQuery when highlighting is enabled
   if (doHighlight) lastQuery = filter || '';
   const listView = document.getElementById('listView');
   listView.innerHTML = '';
 
-  const q = (filter || '').toLowerCase().trim();
+  const q = (filter || '').trim().toLowerCase();
 
-  const items = songItems
-    .filter(i => {
-      if (!q) return true;
-      if (startsWith) {
-        return i.title && i.title.toLocaleLowerCase('pl-PL').startsWith(q.toLocaleLowerCase('pl-PL'));
-      }
-      return (i.title && i.title.toLowerCase().includes(q)) || (i.body && i.body.toLowerCase().includes(q));
+  const visibleParts = prayerParts
+    .map(part => {
+      const visibleSections = (part.sections || [])
+        .map(section => buildSectionGroup(section, q))
+        .filter(Boolean);
+
+      if (visibleSections.length === 0) return null;
+
+      const partWrap = document.createElement('div');
+      partWrap.className = 'partBlock';
+
+      const partHeader = document.createElement('div');
+      partHeader.className = 'partHeader';
+      partHeader.textContent = part.title;
+      partWrap.appendChild(partHeader);
+
+      visibleSections.forEach(sectionEl => partWrap.appendChild(sectionEl));
+      return partWrap;
     })
-    .sort((a, b) => a.title.localeCompare(b.title, 'pl', { sensitivity: 'base' }));
+    .filter(Boolean);
 
-  items.forEach(item => {
-    // insert letter header when first letter changes
-    const first = (item.title || '').trim().charAt(0).toLocaleUpperCase('pl-PL') || '';
-    if (!listView._lastLetter) listView._lastLetter = '';
-    if (first && first !== listView._lastLetter) {
-      const h = document.createElement('div');
-      h.className = 'letterHeader';
-      h.textContent = first;
-      listView.appendChild(h);
-      listView._lastLetter = first;
-    }
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'song';
-    btn.innerHTML = highlightText(item.title, doHighlight ? filter : '');
-    btn.addEventListener('click', () => loadSongFromCache(item.file));
-    listView.appendChild(btn);
-  });
-
-  if (items.length === 0) {
+  if (visibleParts.length === 0) {
     const p = document.createElement('div');
     p.textContent = 'Brak dopasowań';
     p.style.padding = '12px';
     listView.appendChild(p);
+    return;
   }
+
+  visibleParts.forEach(partEl => listView.appendChild(partEl));
+}
+
+function openAlphabeticModal() {
+  const modal = document.getElementById('alphabeticModal');
+  const list = document.getElementById('alphabeticList');
+  list.innerHTML = '';
+
+  const ordered = [...songItems]
+    .filter(item => item && item.title)
+    .sort((a, b) => a.title.localeCompare(b.title, 'pl', { sensitivity: 'base' }));
+
+  if (!ordered.length) return;
+
+  const block = document.createElement('div');
+  block.className = 'sectionBlock';
+
+  const itemsWrap = document.createElement('div');
+  itemsWrap.className = 'sectionItems';
+
+  ordered.forEach(item => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'song';
+    btn.innerHTML = formatMarkdown(item.title);
+    btn.addEventListener('click', () => {
+    modal.classList.remove('open');
+    document.getElementById('homeView').style.display = 'none';
+    loadSongFromCache(item.file);
+  });
+    itemsWrap.appendChild(btn);
+  });
+
+  block.appendChild(itemsWrap);
+  list.appendChild(block);
+  history.pushState({ view: 'alphabetic' }, '', '#spis');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeAlphabeticModal() {
+  const modal = document.getElementById('alphabeticModal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
 }
 
 function renderAlphaIndex() {
   const idx = document.getElementById('alphaIndex');
   idx.innerHTML = '';
-  const letters = new Set();
-  songItems.forEach(i => {
-    if (!i.title) return;
-    const first = i.title.trim().charAt(0).toLocaleUpperCase('pl-PL');
-    if (first) letters.add(first);
-  });
-  const arr = Array.from(letters).sort((a, b) => a.localeCompare(b, 'pl', { sensitivity: 'base' }));
 
   const allBtn = document.createElement('button');
   allBtn.type = 'button';
-  allBtn.textContent = 'Wszystkie';
-  allBtn.style.padding = '4px 8px';
-  allBtn.addEventListener('click', () => { document.getElementById('searchInput').value = ''; renderList('', false, false); });
-  idx.appendChild(allBtn);
-
-  arr.forEach(letter => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = letter;
-    b.style.padding = '4px 8px';
-    b.addEventListener('click', () => { document.getElementById('searchInput').value = letter; renderList(letter, true, false); });
-    idx.appendChild(b);
+  allBtn.className = 'alphabeticBtn';
+  allBtn.textContent = 'Spis alfabetyczny';
+  allBtn.style.padding = '4px 10px';
+  allBtn.style.borderRadius = '8px';
+  allBtn.style.border = '1px solid rgba(31,77,71,0.25)';
+  allBtn.style.background = '#fff';
+  allBtn.style.color = '#1f4d47';
+  allBtn.style.cursor = 'pointer';
+  allBtn.style.fontWeight = '700';
+  allBtn.style.fontSize = '1rem';
+  allBtn.addEventListener('click', () => {
+    document.getElementById('searchInput').value = '';
+    openAlphabeticModal();
   });
+  idx.appendChild(allBtn);
 }
 
-function loadSongFromCache(fileName) {
+function renderSongNav(fileName) {
+  const nav = document.getElementById('songNav');
+  nav.innerHTML = '';
+
+  let currentSection = null;
+  let currentChild = null;
+  let currentChildIndex = -1;
+  let currentIndex = -1;
+
+  // Szukamy modlitwy w nowej strukturze prayerSections
+  for (const section of prayerSections) {
+
+    if (section.files && section.files.includes(fileName)) {
+      currentSection = section;
+      currentIndex = section.files.indexOf(fileName);
+      break;
+    }
+
+    if (section.children) {
+      for (let i = 0; i < section.children.length; i++) {
+        const child = section.children[i];
+
+        if (child.files && child.files.includes(fileName)) {
+          currentSection = section;
+          currentChild = child;
+          currentChildIndex = i;
+          currentIndex = child.files.indexOf(fileName);
+          break;
+        }
+      }
+    }
+
+    if (currentSection) break;
+  }
+
+  const prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'navBtn';
+  prevBtn.textContent = '← Poprzednie';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'navBtn';
+  nextBtn.textContent = 'Następne →';
+
+  // Kategoria z podkategoriami:
+  // poprzednie/następne = poprzednia/następna podkategoria
+  if (currentChild && currentSection.children) {
+
+    prevBtn.disabled = currentChildIndex <= 0;
+    nextBtn.disabled =
+      currentChildIndex >= currentSection.children.length - 1;
+
+    prevBtn.addEventListener('click', () => {
+      if (currentChildIndex <= 0) return;
+
+      const previousChild =
+        currentSection.children[currentChildIndex - 1];
+
+      const firstFile = previousChild.files?.[0];
+
+      if (firstFile) {
+        loadSongFromCache(firstFile, false);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentChildIndex >= currentSection.children.length - 1) return;
+
+      const nextChild =
+        currentSection.children[currentChildIndex + 1];
+
+      const firstFile = nextChild.files?.[0];
+
+      if (firstFile) {
+        loadSongFromCache(firstFile, false);
+      }
+    });
+
+  // Zwykła kategoria:
+  // poprzednie/następne = poprzednia/następna modlitwa
+  } else if (currentSection && currentSection.files) {
+
+    prevBtn.disabled = currentIndex <= 0;
+    nextBtn.disabled =
+      currentIndex >= currentSection.files.length - 1;
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex <= 0) return;
+
+      loadSongFromCache(
+        currentSection.files[currentIndex - 1]
+      );
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex >= currentSection.files.length - 1) return;
+
+      loadSongFromCache(
+        currentSection.files[currentIndex + 1]
+      );
+    });
+
+  } else {
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+  }
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+}
+function loadSongFromCache(fileName, addHistory = true) {
+
+  if (addHistory) {
+  history.pushState({ view: 'song', file: fileName }, '', '#modlitwa');
+}
+
   const item = songItems.find(i => i.file === fileName);
+
   if (!item) return loadSong(fileName);
 
-  document.getElementById("title").textContent = item.title;
-  document.getElementById("text").innerHTML = highlightText(item.body, lastQuery);
+  document.getElementById("title").innerHTML =
+    formatMarkdown(item.title);
+
+  const textEl = document.getElementById("text");
+
+  textEl.innerHTML = highlightText(item.body, lastQuery);
+
+  textEl.querySelectorAll('.prayerLink').forEach(link => {
+
+    link.addEventListener('click', (e) => {
+
+      e.preventDefault();
+
+      const linkedItem = songItems.find(i => i.file === link.dataset.file);
+
+      if (!linkedItem) return;
+
+      document.getElementById('prayerModalTitle').innerHTML =
+        formatMarkdown(escapeHtml(linkedItem.title));
+
+      document.getElementById('prayerModalText').innerHTML =
+        highlightText(linkedItem.body, '');
+      history.replaceState(
+        { view: 'song', file: fileName, scrollY: window.scrollY },
+       '',
+        '#modlitwa'
+     );
+      history.pushState({ view: 'modal', parentFile: fileName }, '', '#modlitwa-okno');
+
+      const modal = document.getElementById('prayerModal');
+
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+
+    });
+
+  });
+
+  renderSongNav(fileName);
 
   document.getElementById("listView").style.display = "none";
   document.getElementById("songView").style.display = "block";
+
+  document.getElementById("songView").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
 }
-
-async function loadSong(fileName) {
-  try {
-    const { data, file: actualFile } = await fetchSongFile(fileName);
-    const parsed = parseSongData(data, actualFile);
-
-    document.getElementById("title").textContent = parsed.title;
-    document.getElementById("text").innerHTML = highlightText(parsed.body, lastQuery);
-
-    document.getElementById("listView").style.display = "none";
-    document.getElementById("songView").style.display = "block";
-  } catch (e) {
-    document.getElementById("title").textContent = fileName.replace(/\.md$/i, '');
-    document.getElementById("text").textContent = 'Nie można wczytać pliku.';
+function showPreviousSection() {
+  if (!currentSection) {
+    showHome();
+    return;
   }
-}
 
+  document.getElementById("songView").style.display = "none";
+  document.getElementById("homeView").style.display = "none";
+  document.getElementById("listView").style.display = "";
+
+  renderListForSection(currentSection, false);
+}
+function showHome() {
+  document.getElementById("homeView").style.display = "";
+  document.getElementById("listView").style.display = "none";
+  document.getElementById("songView").style.display = "none";
+  document.getElementById("songNav").innerHTML = "";
+
+  history.replaceState({ view: 'home' }, '', '#home');
+}
 function showList() {
+  document.getElementById("homeView").style.display = "none";
   document.getElementById("listView").style.display = "block";
   document.getElementById("songView").style.display = "none";
+  document.getElementById('songNav').innerHTML = '';
 }
 
 </script>
@@ -411,20 +1467,50 @@ function escapeHtml(str) {
 function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
-
-function highlightText(raw, query) {
-  if (!query) return escapeHtml(raw).replace(/\n/g, '<br>');
-  const q = query.trim();
-  if (!q) return escapeHtml(raw).replace(/\n/g, '<br>');
-  const escaped = escapeHtml(raw);
-  const re = new RegExp(escapeRegExp(q), 'gi');
-  return escaped.replace(re, (m) => `<mark class="highlight">${m}</mark>`).replace(/\n/g, '<br>');
+function formatMarkdown(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\[czerwony\](.*?)\[\/czerwony\]/gs, '<span style="color:red">$1</span>');
 }
+function highlightText(raw, query) {
+  const q = (query || '').trim();
 
+  let text = escapeHtml(raw);
+
+  // Obsługa linków do innych modlitw
+  text = text.replace(
+    /\[link:(.*?)\](.*?)\[\/link\]/gs,
+    '<a href="#" class="prayerLink" data-file="$1">$2</a>'
+  );
+
+  // Wyszukiwanie
+  if (q) {
+    const re = new RegExp(escapeRegExp(q), 'gi');
+
+    text = text.replace(
+      re,
+      (m) => `<mark class="highlight">${m}</mark>`
+    );
+  }
+
+  text = formatMarkdown(text);
+
+  return text
+    .split('\n')
+    .map(line => `<span class="verseLine">${line}</span>`)
+    .join('');
+}
 document.addEventListener('DOMContentLoaded', async () => {
   await loadAllSongs();
   renderAlphaIndex();
-  renderList();
+  renderHome();
+
+  const modal = document.getElementById('alphabeticModal');
+  document.querySelector('.alphabeticModalClose').addEventListener('click', closeAlphabeticModal);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeAlphabeticModal();
+  });
 
   const input = document.getElementById('searchInput');
   const btn = document.getElementById('searchBtn');
@@ -441,21 +1527,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   const doSearch = () => { showList(); renderList(input.value); };
   const debounced = debounce(doSearch, 200);
 
-  btn.addEventListener('click', () => { showList(); renderList(input.value); });
+  btn.addEventListener('click', () => { showList(); input.blur(); renderList(input.value); });
   clear.addEventListener('click', () => { input.value = ''; showList(); renderList(''); });
   input.addEventListener('input', () => debounced());
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { showList(); renderList(input.value); } });
+  input.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    btn.click();
+  }
+});
 
   // Theme toggle
-  const storedTheme = localStorage.getItem('spiewnik_theme');
+  const storedTheme = localStorage.getItem('modlitewnik_theme');
   if (storedTheme === 'night') document.body.classList.add('night');
   theme.addEventListener('click', () => {
     document.body.classList.toggle('night');
-    localStorage.setItem('spiewnik_theme', document.body.classList.contains('night') ? 'night' : 'day');
+    localStorage.setItem('modlitewnik_theme', document.body.classList.contains('night') ? 'night' : 'day');
   });
 
   // Font slider
-  const storedFontSize = localStorage.getItem('spiewnik_fontSize');
+  const storedFontSize = localStorage.getItem('modlitewnik_fontSize');
   if (storedFontSize) {
     document.documentElement.style.fontSize = storedFontSize + 'px';
     fontSlider.value = storedFontSize;
@@ -464,8 +1555,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   fontSlider.addEventListener('input', () => {
     const v = fontSlider.value;
     document.documentElement.style.fontSize = v + 'px';
+    document.body.classList.toggle('large-font', Number(v) >= 20);
     fontLabel.textContent = v + 'px';
-    localStorage.setItem('spiewnik_fontSize', v);
+    localStorage.setItem('modlitewnik_fontSize', v);
   });
   // PWA install prompt handling
   let deferredPrompt = null;
@@ -482,14 +1574,102 @@ document.addEventListener('DOMContentLoaded', async () => {
     deferredPrompt = null;
     installBtn.style.display = 'none';
   });
-  // Register service worker for offline support
+ //  Register service worker for offline support
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('spiewnik-sw.js').then(reg => {
+    navigator.serviceWorker.register('modlitewnik-sw.js').then(reg => {
       console.log('ServiceWorker registered:', reg.scope);
     }).catch(err => {
-      console.warn('ServiceWorker registration failed:', err);
-    });
+     console.warn('ServiceWorker registration failed:', err);
+   });
   }
+});
+document.querySelector('.prayerModalClose').addEventListener('click', () => {
+
+  const state = history.state;
+  const scrollPosition = window.scrollY;
+
+  if (state && state.view === 'modal' && state.parentFile) {
+
+    history.replaceState(
+      { view: 'song', file: state.parentFile },
+      '',
+      '#modlitwa'
+    );
+  }
+
+  document.getElementById('prayerModal').classList.remove('open');
+  document.getElementById('prayerModal').setAttribute('aria-hidden', 'true');
+
+  window.scrollTo(0, scrollPosition);
+});
+window.addEventListener('popstate', (event) => {
+
+  const alphabeticModal = document.getElementById('alphabeticModal');
+
+  if (alphabeticModal.classList.contains('open')) {
+    alphabeticModal.classList.remove('open');
+    alphabeticModal.setAttribute('aria-hidden', 'true');
+    return;
+  }
+
+  if (event.state && event.state.view === 'modal') {
+
+    document.getElementById('prayerModal').classList.remove('open');
+    document.getElementById('prayerModal').setAttribute('aria-hidden', 'true');
+
+    return;
+  }
+
+  if (event.state && event.state.view === 'song') {
+
+    document.getElementById("prayerModal").classList.remove('open');
+    document.getElementById('prayerModal').setAttribute('aria-hidden', 'true');
+
+    loadSongFromCache(event.state.file, false);
+
+    setTimeout(() => {
+
+      if (typeof event.state.scrollY === 'number') {
+
+        window.scrollTo({
+          top: event.state.scrollY,
+          behavior: "smooth"
+        });
+
+      } else {
+
+        document.getElementById("songView").scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+    }, 0);
+
+    return;
+  }
+
+  if (event.state && event.state.view === 'section') {
+
+    document.getElementById("songView").style.display = "none";
+    document.getElementById("homeView").style.display = "none";
+    document.getElementById("listView").style.display = "";
+
+    const section = prayerSections.find(
+      section => section.id === event.state.sectionId
+    );
+
+    if (section) {
+      renderListForSection(section, false);
+    } else {
+      showHome();
+    }
+
+    return;
+  }
+
+  showHome();
 });
 </script>
 

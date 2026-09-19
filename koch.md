@@ -1,23 +1,6 @@
 ---
-title: Kochajmy Pana
+title: Modlitwa do świętego Józefa
 ---
-
-1. Kochajmy Pana, bo serce Jego
-Żąda i pragnie serca naszego.
-Dla nas Mu włócznią boleść zadana.
-Kochajmy Pana, kochajmy Pana!
-
-2. O, pójdź do Niego, wszystko stworzenie,
-Sercu Jezusa złóż dziękczynienie
-I swoje przed Nim zegnij kolana.
-Kochajmy Pana, kochajmy Pana!
-
-3. Pójdźcie do Niego, biedni grzesznicy
-Zmyć grzechów zmazy w czystej Krynicy.
-Nad śnieg zbieleje dusza zmazana.
-Kochajmy Pana, kochajmy Pana!
-
-4. Pójdźcie do Niego, szczęśliwe dusze
-Obmyte we łzach, pokuty skrusze.
-Już niewinności szata wam dana.
-Kochajmy Pana, kochajmy Pana!
+[czerwony]**P.**[/czerwony] Módl się za nami, święty Józefie.
+[czerwony]**W.**[/czerwony] Abyśmy się stali godnymi obietnic Chrystusowych.
+Do Ciebie, święty Józefie, uciekamy się w naszej niedoli. Wezwawszy pomocy twej Najświętszej Oblubienicy, z ufnością również błagamy o twoją opiekę. Przez miłość, która Cię łączyła z Niepokalaną Dziewicą, Bogurodzicą i przez ojcowską Twą troskliwość, którą otaczałeś Dziecię Jezus, pokornie błagamy: wejrzyj łaskawie na dziedzictwo, które Jezus Chrystus nabył Krwią Swoją i swoim potężnym wstawiennictwem dopomóż nam w naszych potrzebach. Opatrznościowy Stróżu Bożej Rodziny, czuwaj nad wybranym potomstwem Jezusa Chrystusa. Oddal od nas, ukochany Ojcze, wszelką zarazę błędów i zepsucia. Potężny nasz Wybawco, przybądź nam łaskawie z niebiańską pomocą w tej walce z mocami ciemności, a jak niegdyś uratowałeś Dziecię Jezus z niebezpieczeństwa, które groziło Jego życiu, tak teraz broń świętego Kościoła Bożego od wrogich zasadzek i od wszelkiej przeciwności. Otaczaj każdego z nas nieustanną opieką, abyśmy za Twoim przykładem i Twoją pomocą wsparci, mogli żyć świątobliwie, umrzeć pobożnie i osiągnąć wieczną szczęśliwość w niebie. Amen.

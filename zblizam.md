@@ -1,38 +1,21 @@
 ---
-title: Zbliżam się w pokorze
+title: Wspólne odnowienie ślubów
 ---
+[czerwony]*Wszystkie Siostry klękają. Gdy odnowienie ślubów ma miejsce w okresie wielkanocnym – Siostry stoją. Po homilii celebrans przed ołtarzem intonuje antyfonę do Ducha Świętego.*[/czerwony]
 
-1.   Zbliżam się w pokorze i niskości swej
-Wielbię Twój majestat skryty w Hostii tej
-Tobie dziś w ofierze serce daję swe
-O utwierdzaj w wierze, Jezu, dzieci swe.
+[czerwony]**K.**[/czerwony] Przyjdź Duchu Święty.
+[czerwony]**W.**[/czerwony] Napełnij serca swoich wiernych i zapal w nich ogień Swojej miłości.
+[czerwony]**K.**[/czerwony] Módlmy się.
+Wszechmogący wieczny Boże, który powołałeś Swoje służebnice do doskonałego naśladowania Chrystusa, Twojego Syna, spraw, aby zaczerpnąwszy z Ducha Świętego płomiennej gorliwości, były stałe w wierze i wytrwałe w działaniu. Przez Chrystusa Pana naszego.
+[czerwony]**W.**[/czerwony] Amen.
 
-2.   Mylą się, o Boże, w Tobie wzrok i smak
-Kto się im poddaje, temu wiary brak
-Ja jedynie wierzyć Twej nauce chcę
-Że w postaci chleba utaiłeś się.
+[czerwony]*Wszystkie Siostry profeski wstają i głośno odnawiają śluby.*[/czerwony]
 
-3.  Bóstwo swe na Krzyżu skryłeś wobec nas
-Tu ukryte z Bóstwem człowieczeństwo wraz
-Lecz w oboje wierząc, wiem, że dojdę tam
-Gdzieś przygarnął łotra do Twych niebios bram.
+† W Imię uwielbionego Pana, Jezusa Chrystusa.
+Wobec Boga Wszechmogącego i wszystkich Świętych odnawiam moją profesję. Ślubuję czystość, ubóstwo i posłuszeństwo według Reguły Świętego Ojca Augustyna i Konstytucji naszego Zgromadzenia. Całym sercem oddaję się tej Rodzinie Zakonnej, aby za łaską Ducha Świętego, w życiu wspólnym, służąc Bogu i Kościołowi, osiągnąć miłość doskonałą. Śluby moje polecam z ufnością Najświętszej Maryi Pannie, Świętemu Ojcu Augustynowi i wszystkim Świętym naszego Zakonu.
+Amen.
+[czerwony]**K.**[/czerwony] Módlmy się za Siostry, które odnowiły śluby.
+Wszechmogący wieczny Boże, wejrzyj łaskawie na to Zgromadzenie i spraw, aby Siostry, które odnowiły śluby z miłości ku Tobie, wiernie je wypełniały i zasłużyły na życie wieczne. Przez Chrystusa Pana naszego.
+[czerwony]**W.**[/czerwony] Amen.
 
-4. Jak niewierny Tomasz Twych nie szukam ran
-Lecz wyznaję z wiarą, żeś mój Bóg i Pan
-Pomóż wierze mojej, Jezu, łaską swą
-Ożyw mą nadzieję, rozpal miłość mą.
-
-5.   Ty coś upamiętnił śmierci Bożej czas
-Chlebie żywy życiem swym darzący nas
-Spraw, bym dla swej duszy życie z Ciebie brał
-Bym nad wszelką słodycz Ciebie poznać chciał.
-
-6.   Ty, co jak Pelikan Krwią swą karmisz lud
-Przywróć mi niewinność, oddal grzechów brud
-Oczyść mnie Krwią swoją, która wszystkich nas
-Jedną kroplą może obmyć z win i zmaz
-
-7.   Pod zasłoną chleba, Jezu, widzę Cię
-Niech pragnienie serca kiedyś spełni się
-Bym oblicze Twoje tam oglądać mógł
-Gdzie miejsce wybranym przygotował Bóg.
+[czerwony]*Po odnowieniu ślubów postulantki i nowicjuszki wstają. Następuje modlitwa powszechna.*[/czerwony]
