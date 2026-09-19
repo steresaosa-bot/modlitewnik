@@ -988,13 +988,21 @@ function parseSongData(data, file) {
 
 }
   if (!title) {
-    const lines = data.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-    for (const line of lines) {
-      const candidate = sanitizeTitle(line);
-      if (!candidate) continue;
-      if (candidate.toLowerCase().includes('pielgrzymka') && candidate.toLowerCase().includes('https://')) continue;
-      title = candidate;
-      break;
+    // Try common markdown heading styles as a fallback
+    const mdHeading = data.match(/^#{1,3}\s*(.+)$/m);
+    if (mdHeading && mdHeading[1]) {
+      title = sanitizeTitle(mdHeading[1].trim());
+    }
+
+    if (!title) {
+      const lines = data.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      for (const line of lines) {
+        const candidate = sanitizeTitle(line);
+        if (!candidate) continue;
+        if (candidate.toLowerCase().includes('pielgrzymka') && candidate.toLowerCase().includes('https://')) continue;
+        title = candidate;
+        break;
+      }
     }
   }
 
