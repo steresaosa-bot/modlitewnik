@@ -1409,8 +1409,8 @@ function renderSongNav(fileName) {
 function loadSongFromCache(fileName, addHistory = true) {
 
   if (addHistory) {
-  history.pushState({ view: 'song', file: fileName }, '', '#modlitwa');
-}
+    history.pushState({ view: 'song', file: fileName }, '', '#modlitwa=' + encodeURIComponent(fileName));
+  }
 
   const item = songItems.find(i => i.file === fileName);
 
@@ -1441,9 +1441,9 @@ function loadSongFromCache(fileName, addHistory = true) {
       history.replaceState(
         { view: 'song', file: fileName, scrollY: window.scrollY },
        '',
-        '#modlitwa'
+        '#modlitwa=' + encodeURIComponent(fileName)
      );
-      history.pushState({ view: 'modal', parentFile: fileName }, '', '#modlitwa-okno');
+      history.pushState({ view: 'modal', parentFile: fileName }, '', '#modlitwa-okno=' + encodeURIComponent(fileName));
 
       const modal = document.getElementById('prayerModal');
 
@@ -1541,13 +1541,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderAlphaIndex();
   renderHome();
 
-  // Handle initial URL fragment (so links with #kategoria or #spis work on first load)
-  const initialHash = (location.hash || '').toLowerCase();
-  if (initialHash === '#kategoria') {
+  // Handle initial URL fragment (so links with #kategoria, #spis or #modlitwa=file work on first load)
+  const initialHash = (location.hash || '');
+  const lowHash = initialHash.toLowerCase();
+  if (lowHash === '#kategoria') {
     showList();
     renderList();
-  } else if (initialHash === '#spis') {
+  } else if (lowHash === '#spis') {
     openAlphabeticModal();
+  } else if (lowHash.startsWith('#modlitwa=')) {
+    try {
+      const file = decodeURIComponent(initialHash.split('=')[1] || '');
+      if (file) loadSongFromCache(file, false);
+    } catch (e) {
+      // ignore malformed hash
+    }
   }
 
   const modal = document.getElementById('alphabeticModal');
@@ -1637,7 +1645,7 @@ document.querySelector('.prayerModalClose').addEventListener('click', () => {
     history.replaceState(
       { view: 'song', file: state.parentFile },
       '',
-      '#modlitwa'
+      '#modlitwa=' + encodeURIComponent(state.parentFile)
     );
   }
 
@@ -1691,6 +1699,22 @@ window.addEventListener('popstate', (event) => {
 
     }, 0);
 
+    return;
+  }
+
+  // If no state but hash contains a direct song link, handle it
+  const locHash = (location.hash || '').toLowerCase();
+  if (locHash.startsWith('#modlitwa=')) {
+    try {
+      const file = decodeURIComponent(location.hash.split('=')[1] || '');
+      if (file) {
+        document.getElementById('prayerModal').classList.remove('open');
+        document.getElementById('prayerModal').setAttribute('aria-hidden', 'true');
+        loadSongFromCache(file, false);
+      }
+    } catch (e) {
+      // ignore malformed
+    }
     return;
   }
 
