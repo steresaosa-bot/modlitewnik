@@ -71,11 +71,11 @@ Baranku Boży, który gładzisz grzechy świata,
 wysłuchaj nas, Panie.
 Baranku Boży, który gładzisz grzechy świata,
 zmiłuj się nad nami.
-P. Módl się za nami, Święta Boża Rodzicielko.
-W. Abyśmy się stali godnymi obietnic Chrystusowych.
-P. Módlmy się.
+[czerwony]**P.**[/czerwony] Módl się za nami, Święta Boża Rodzicielko.
+[czerwony]**W.**[/czerwony] Abyśmy się stali godnymi obietnic Chrystusowych.
+[czerwony]**P.**[/czerwony] Módlmy się.
 Panie, nasz Boże, daj nam, sługom swoim, cieszyć się trwałym zdrowiem duszy i ciała, i za wstawiennictwem Najświętszej Maryi, zawsze Dziewicy, uwolnij nas od doczesnych utrapień i obdarz wieczną radością. Przez Chrystusa, Pana naszego.
-W. Amen.
+[czerwony]**W.**[/czerwony] Amen.
 
 **Modlitwy okresowe po litanii**
 
@@ -91,25 +91,14 @@ W. Amen.
 [czerwony]**P.**[/czerwony] Po porodzeniu, Panno, nienaruszoną zostałaś.
 W. Bogurodzico, przyczyń się za nami.
 [czerwony]**P.**[/czerwony] Módlmy się.
-Boże, Ty przez dziewicze macierzyństwo
-Najświętszej Maryi Panny obdarzyłeś ludzi
-łaską wiecznego zbawienia, spraw, abyśmy
-doznawali orędownictwa Tej, przez którą82 83
-Modlitwy w wyznaczonych dniach Ku czci Najświętszej Mar yi Panny
-otrzymaliśmy Twojego Syna, Dawcę życia
-wiecznego. Który z Tobą żyje na wszystkie
-wieki wieków.
+Boże, Ty przez dziewicze macierzyństwo Najświętszej Maryi Panny obdarzyłeś ludzi łaską wiecznego zbawienia, spraw, abyśmy doznawali orędownictwa Tej, przez którą otrzymaliśmy Twojego Syna, Dawcę życia wiecznego. Który z Tobą żyje na wszystkie wieki wieków.
 W. Amen.
 
 [czerwony]*W Okresie Wielkanocnym*[/czerwony]
 [czerwony]**P.**[/czerwony]Raduj się i wesel, Panno Maryjo, alleluja.
 [czerwony]**W.**[/czerwony] Bo zmartwychwstał Pan prawdziwie, alleluja.
 [czerwony]**P.**[/czerwony] Módlmy się.
-Boże, Ty przez zmartwychwstanie Twojego Syna, naszego Pana, Jezusa Chrystusa,
-przywróciłeś radość światu, spraw, aby-
-śmy przez Jego Matkę, Dziewicę Maryję,
-osiągnęli szczęście życia wiecznego. Przez
-Chrystusa, Pana naszego.
+Boże, Ty przez zmartwychwstanie Twojego Syna, naszego Pana, Jezusa Chrystusa, przywróciłeś radość światu, spraw, abyśmy przez Jego Matkę, Dziewicę Maryję, osiągnęli szczęście życia wiecznego. Przez Chrystusa, Pana naszego.
 [czerwony]**W.**[/czerwony] Amen.
 
 [czerwony]*W październiku*[/czerwony] 
