@@ -1589,6 +1589,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) {
       // ignore malformed hash
     }
+  } else if (lowHash === '#modlitwa') {
+    // Open the first available prayer when hash is just #modlitwa
+    if (songItems && songItems.length) {
+      const first = songItems.find(i => i && (i.body || i.title)) || songItems[0];
+      if (first) loadSongFromCache(first.file, false);
+    } else {
+      // fallback: open alphabetic modal so user can pick
+      openAlphabeticModal();
+    }
   }
 
   const modal = document.getElementById('alphabeticModal');
