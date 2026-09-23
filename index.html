@@ -905,165 +905,126 @@ async function fetchSongFile(file) {
 }
 
 function parseSongData(data, file) {
-
   function isGenericTitle(value) {
     if (!value) return true;
-
     const cleaned = value.trim().toLowerCase();
-
-    if (
-      cleaned.includes('pielgrzymka') ||
-      cleaned.includes('śpiewnik') ||
-      cleaned === 'modlitewnik'
-    ) {
-      return true;
-    }
-
-    const genericPattern =
-      /^\s*(?:(?:śpiewnik|pielgrzymkowy|pielgrzymka|home|index|modlitewnik)(?:[\s\u2013\u2014\-|:\/\\]+(?:śpiewnik|pielgrzymkowy|pielgrzymka|home|index|modlitewnik))*)\s*$/i;
-
+    if (cleaned.includes('pielgrzymka') || cleaned.includes('śpiewnik')) return true;
+    const genericPattern = /^\s*(?:(?:śpiewnik|pielgrzymkowy|pielgrzymka|home|index)(?:[\s\u2013\u2014\-\|:\/\\]+(?:śpiewnik|pielgrzymkowy|pielgrzymka|home|index))*)\s*$/i;
     return genericPattern.test(cleaned);
   }
 
-  const looksLikeHtml =
-    /<(?:html|!doctype|body|title|h1)[\s>]/i.test(data);
+  const looksLikeHtml = /<(?:html|!doctype|body|title|h1)[\s>]/i.test(data);
+  const isHtml = file.toLowerCase().endsWith('.html') || looksLikeHtml;
 
-  const isHtml =
-    file.toLowerCase().endsWith('.html') || looksLikeHtml;
-
-  // -------------------------
-  // HTML
-  // -------------------------
   if (isHtml) {
-
     const cleaned = data
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '');
 
     let title = null;
-
-    const h1Matches =
-      cleaned.match(/<h1[^>]*>([\s\S]*?)<\/h1>/gi) || [];
-
+    const h1Matches = cleaned.match(/<h1[^>]*>([\s\S]*?)<\/h1>/gi) || [];
     for (const match of h1Matches) {
-
-      const candidate = sanitizeTitle(
-        match.replace(/<\/?h1[^>]*>/gi, '')
-      ).trim();
-
+      const candidate = sanitizeTitle(match.replace(/<\/??h1[^>]*>/gi, '')).trim();
       if (!candidate) continue;
       if (isGenericTitle(candidate)) continue;
-
       title = candidate;
       break;
     }
 
     if (!title) {
-      const titleMatch =
-        cleaned.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-
-      if (titleMatch) {
-        title = sanitizeTitle(titleMatch[1].trim());
-      }
+      const titleMatch = cleaned.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+      if (titleMatch) title = sanitizeTitle(titleMatch[1].trim());
     }
 
     if (!title || isGenericTitle(title)) {
-      title = file
-        .replace(/\.html$/i, '')
-        .replace(/\.md$/i, '');
+      title = file.replace(/\.html$/i, '').replace(/\.md$/i, '');
     }
 
-    const body = stripHtml(cleaned)
-      .replace(/\r?\n\s*\r?\n/g, '\n\n')
-      .trim();
-
+    const body = stripHtml(cleaned).replace(/\r?\n\s*\r?\n/g, '\n\n').trim();
     return { title, body };
   }
 
-  // -------------------------
-  // MARKDOWN
-  // -------------------------
-
+  const parts = data.split('---');
+  const body = parts.length > 2 ? parts.slice(2).join('---') : data;
+  // Try to read YAML frontmatter (between the first pair of ---)
   let title = null;
-  let body = data;
+  if (parts.length > 2) {
 
-  // YAML frontmatter:
-  // ---
-  // title: Litania loretańska
-  // ---
-  const frontmatterMatch = data.match(
-    /^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/
+  const frontmatter = parts[1];
+
+  const titleBlockMatch = frontmatter.match(
+    /^\s*title\s*:\s*\|\s*\r?\n((?:[ \t]+.*(?:\r?\n|$))*)/im
   );
 
-  if (frontmatterMatch) {
+  if (titleBlockMatch) {
 
-    const frontmatter = frontmatterMatch[1];
+    title = titleBlockMatch[1]
+      .split(/\r?\n/)
+      .map(line => line.replace(/^[ \t]+/, '').trimEnd())
+      .filter((line, index, lines) => !(index === lines.length - 1 && line === ''))
+      .join('\n')
+      .trim();
 
-    const titleMatch = frontmatter.match(
-      /^\s*title\s*:\s*(.+?)\s*$/im
-    );
+  } else {
+
+    const titleMatch = frontmatter.match(/^\s*title\s*:\s*(.+)\s*$/im);
 
     if (titleMatch) {
+
       title = titleMatch[1].trim();
 
       if (
         (title.startsWith('"') && title.endsWith('"')) ||
         (title.startsWith("'") && title.endsWith("'"))
       ) {
+
         title = title.slice(1, -1).trim();
+
       }
+
     }
 
-    body = data.slice(frontmatterMatch[0].length);
   }
 
-  // Fallback: Markdown heading
+}
   if (!title) {
-
-    const mdHeading =
-      body.match(/^\s*#{1,3}\s+(.+?)\s*$/m);
-
+    // Try common markdown heading styles as a fallback
+    const mdHeading = data.match(/^#{1,3}\s*(.+)$/m);
     if (mdHeading && mdHeading[1]) {
       title = sanitizeTitle(mdHeading[1].trim());
     }
-  }
 
-  // Fallback: first non-empty line
-  if (!title) {
-
-    const lines =
-      body.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
-
-    for (const line of lines) {
-
-      const candidate = sanitizeTitle(line);
-
-      if (!candidate) continue;
-
-      if (
-        candidate.toLowerCase().includes('pielgrzymka') &&
-        candidate.toLowerCase().includes('https://')
-      ) {
-        continue;
+    if (!title) {
+      const lines = data.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      for (const line of lines) {
+        const candidate = sanitizeTitle(line);
+        if (!candidate) continue;
+        if (candidate.toLowerCase().includes('pielgrzymka') && candidate.toLowerCase().includes('https://')) continue;
+        title = candidate;
+        break;
       }
-
-      title = candidate;
-      break;
     }
   }
 
-  // Last fallback: filename
   if (!title || isGenericTitle(title)) {
-
-    title = file
-      .replace(/\.md$/i, '')
-      .replace(/\.html$/i, '');
+    title = file.replace(/\.md$/i, '');
   }
 
-  return {
-    title,
-    body: body.trim()
-  };
+  return { title, body: body.trim() };
+}
+
+async function loadAllSongs() {
+  const list = await Promise.all(songs.map(async (file) => {
+    try {
+      const { data, file: actualFile } = await fetchSongFile(file);
+      const parsed = parseSongData(data, actualFile);
+      return { file, actualFile, title: parsed.title, body: parsed.body };
+    } catch (e) {
+      return { file, actualFile: file, title: file.replace(/\.md$/i, ''), body: '' };
+    }
+  }));
+
+  songItems = list;
 }
 
 function buildSectionGroup(section, filter = '') {
